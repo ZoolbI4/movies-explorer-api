@@ -8,12 +8,12 @@ const handelError = require('./middlewares/handelError');
 const routes = require('./routes');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000 } = process.env;
+const { PORT, MONGO_URL_DEV } = require('./config/config');
+
+const { NODE_ENV, MONGO_URL } = process.env;
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
-  useNewUrlParser: true,
-});
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : MONGO_URL_DEV);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
